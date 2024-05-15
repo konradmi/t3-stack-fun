@@ -1,6 +1,10 @@
-import NextAuth, { Session } from 'next-auth'
+import NextAuth, { Session, Account } from 'next-auth'
+import { AdapterUser } from 'next-auth/adapters'
+import { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcrypt'
+
+import type { User } from '../../../types/auth'
 
 import prisma from '../../../lib/prisma'
 
@@ -28,7 +32,7 @@ export const authOptions = {
 
         if (!isPasswordValid) throw new Error('Incorrect Password')
         // features can be taken from the db. the user feature is only for demo purposes
-        if (isPasswordValid) return { username: user.username, id: user.id.toString(), features: ['user'] }
+        if (isPasswordValid) return { username: user.username, id: user.id.toString(), features: ['user'] } as User
 
         return null
       },
@@ -41,14 +45,14 @@ export const authOptions = {
     async signIn() {
      return true
     },
-    async jwt({ token, user, account }: any) {
+    async jwt({ token, user, account }: { token: JWT, user: User | AdapterUser, account: Account | null }) {
       if (account?.provider === 'credentials' && user) {
         // with the credentials provider, user is the object returned from the authorize method
         token.user = user
       }
       return token
     },
-    async session({ session, token }: { session: Session, token: any}) {
+    async session({ session, token }: { session: Session, token: JWT}) {
       session.user = token.user
       return session
     }
