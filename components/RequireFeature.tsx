@@ -1,6 +1,6 @@
 'use client'
 
-import react, { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { useSession } from 'next-auth/react'
 
 type RequireFeatureProps = {
