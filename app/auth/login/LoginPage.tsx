@@ -3,7 +3,7 @@
 import { SyntheticEvent, useRef, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-import { login, loginMS } from '../../../utils/auth'
+import { login } from '../../../utils/auth'
 
 import styles from './LoginPage.module.scss'
 import { useSession } from 'next-auth/react'
@@ -28,11 +28,6 @@ const LoginPage = () => {
     router.push(response.callbackUrl)
   }
 
-  const handleLoginWithMS = async (e: SyntheticEvent) => {
-    e.preventDefault()
-    await loginMS()
-  }
-
   return (
     <form className={styles.LoginPage} onSubmit={handleSubmit}>
       <h1 className={styles.LoginPage__header}>Login</h1>
@@ -48,7 +43,6 @@ const LoginPage = () => {
         error && <h4>{error}</h4>
       }
       <button className={styles.LoginPage__button} type='submit'>Login</button>
-      <button className={styles.LoginPage__button} onClick={handleLoginWithMS}>Login with MS</button>
     </form>
   )
 }

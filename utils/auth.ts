@@ -13,10 +13,6 @@ export const login = async (username: string, password: string) => {
   }
 }
 
-export const loginMS = async () => {
-  await signIn('azure-ad')
-}
-
 export const register = async (username: string, password: string, confirmPassword: string) => {
   if (password !== confirmPassword) return { error: 'Password mismatch', success: false }
 
